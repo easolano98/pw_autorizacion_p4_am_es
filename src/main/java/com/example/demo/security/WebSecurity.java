@@ -20,16 +20,18 @@ public class WebSecurity {
 
 	@Autowired
 	private UserDetailsService detailsService;
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizerdHandler).and()
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-				.antMatchers("/API/1.0/Autorizacion/tokens/obtener/**").permitAll().anyRequest().authenticated();
+				.antMatchers("/tokens/obtener/**").permitAll().anyRequest().authenticated();
 
 		http.authenticationProvider(this.authenticationProvider());
 
 		return http.build();
 	}
+
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
 
@@ -40,11 +42,13 @@ public class WebSecurity {
 		return authProvider;
 
 	}
+
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
 		return authConfig.getAuthenticationManager();
-		
+
 	}
+
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
