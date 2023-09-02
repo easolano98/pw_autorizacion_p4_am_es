@@ -15,18 +15,18 @@ public class JwtUtils {
 
 	private static final Logger LOG = LoggerFactory.getLogger(JwtUtils.class);
 
-	@Value("${app.jwt.secret}")
-	private String jwtSecret;
-	@Value("${app.jwt.expiration.ms}")
-	private Integer jwtExpiration;
+//	@Value("${app.jwt.secret}")
+//	private String jwtSecret;
+//	@Value("${app.jwt.expiration.ms}")
+//	private Integer jwtExpiration;
 
-	public String generateJwtToken( String nombre) {
+	public String generateJwtToken(String nombre, String jwtSecret, Integer jwtExpiration) {
 
 		LOG.info("Semilla " + jwtSecret + " Tiempo" + jwtExpiration);
 
 		return Jwts.builder().setSubject(nombre).setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + this.jwtExpiration))
-				.signWith(SignatureAlgorithm.HS512, this.jwtSecret).compact();
+				.setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
+				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
 	}
 
 }
